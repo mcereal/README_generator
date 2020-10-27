@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/mcereal/README_generator/issues"
   },
-  "homepage": "https://github.com/mcereal/README_generator#readme"
+  "homepage": "https://github.com/mcereal/README_generator#readme",
+  "dependencies": {
+    "inquirer": "^7.3.3"
+  }
 }
