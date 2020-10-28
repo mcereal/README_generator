@@ -1,8 +1,12 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
+const util = require("util");
+const axios = require("axios");
 
-inquirer
-  .prompt([
+const writeFileAsync = util.promisify(fs.writeFile);
+
+function promptUser() {
+  return inquirer.prompt([
     {
       type: "input",
       message: "What is your Github username?",
@@ -49,11 +53,25 @@ inquirer
         "What does the user need to know about contributing to the repo?",
       name: "contributions",
     },
-  ])
-  .then(function (response) {
-    if (response.confirm === response.password) {
-      console.log("Success!");
-    } else {
-      console.log("You forgot your password already?!");
-    }
-  });
+  ]);
+}
+
+function generateReadMe(answers) {
+  return `#${answers.username}#${answers.email}#${answers.projectName}#${answers.projectDetails}#${answers.license}#${answers.dependencies}`;
+}
+
+async function init() {
+  try {
+    const answers = await promptUser();
+
+    const readMeContent = generateReadMe(answers);
+
+    await writeFileAsync("README.md", readMeContent);
+
+    console.log("Successfully wrote to README.md");
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+init();
