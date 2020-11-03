@@ -1,12 +1,9 @@
-const inquirer = require("inquirer");
 const fs = require("fs");
-const util = require("util");
 const axios = require("axios");
+const inquirer = require("inquirer");
 
-const writeFileAsync = util.promisify(fs.writeFile);
-
-function promptUser() {
-  return inquirer.prompt([
+inquirer
+  .prompt(
     {
       type: "input",
       message: "What is your Github username?",
@@ -52,26 +49,23 @@ function promptUser() {
       message:
         "What does the user need to know about contributing to the repo?",
       name: "contributions",
-    },
-  ]);
-}
+    }
+  )
+  .then(function ({ username }) {
+    const queryUrl = `https://api.github.com/users/${username}/repos?per_page=100`;
 
-function generateReadMe(answers) {
-  return `#${answers.username}#${answers.email}#${answers.projectName}#${answers.projectDetails}#${answers.license}#${answers.dependencies}`;
-}
+    axios.get(queryUrl).then(function (response) {
+      console.log(process.argv[2]);
+      // const repoNames = response.data.map(function (repo) {
+      //   return repo.name;
+      // });
 
-async function init() {
-  try {
-    const answers = await promptUser();
+      // const repoNamesStr = repoNames.join("\n");
 
-    const readMeContent = generateReadMe(answers);
-
-    await writeFileAsync("README.md", readMeContent);
-
-    console.log("Successfully wrote to README.md");
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-init();
+      fs.writeFile("README.MD", repoNamesStr, function (err) {
+        if (err) {
+          throw err;
+        }
+      });
+    });
+  });
