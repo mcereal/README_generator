@@ -1,9 +1,11 @@
 const fs = require("fs");
-const axios = require("axios");
 const inquirer = require("inquirer");
+const util = require("util");
 
-inquirer
-  .prompt(
+const writeFileAsync = util.promisify(fs.writeFile);
+
+const promptUser = () => {
+  return inquirer.prompt([
     {
       type: "input",
       message: "What is your Github username?",
@@ -25,8 +27,24 @@ inquirer
       name: "projectDetails",
     },
     {
-      type: "input",
+      type: "list",
       message: "What kind of license should your project have?",
+      choices: [
+        "None",
+        "Apache License 2.0",
+        "GNU General Public License v3.0",
+        "MIT License",
+        "BSD 2-Clause 'Simplified' License",
+        "BSD 3-Clause 'New' or 'Revised' License",
+        "Boost Software License 1.0",
+        "Creative Commons Zero v1.0 Universal",
+        "Eclipse Public License 2.0",
+        "GNU Affero General Public License v3.0",
+        "GNU General Public License v2.0",
+        "GNU Lesser General Public License v2.1",
+        "Mozilla Public License 2.0",
+        "The Unlicense",
+      ],
       name: "license",
     },
     {
@@ -49,23 +67,21 @@ inquirer
       message:
         "What does the user need to know about contributing to the repo?",
       name: "contributions",
-    }
-  )
-  .then(function ({ username }) {
-    const queryUrl = `https://api.github.com/users/${username}/repos?per_page=100`;
+    },
+  ]);
+};
 
-    axios.get(queryUrl).then(function (response) {
-      console.log(process.argv[2]);
-      // const repoNames = response.data.map(function (repo) {
-      //   return repo.name;
-      // });
+generateREAMDME = (answers) => {
+  return `# ${answers.projectName} \n## Description \n${answers.projectDetails} \n## Table of Contents \n\n- [Installation](##Instalation)\n- [Usage](##Usage)\n- [License](##License)\n- [Contributing](##Contributing)\n- [Tests](##Tests)\n- [Questions](##Questions) \n\n## Installation \n${answers.dependencies} \n## Usage \n${answers.userRepoKnowledge} \n## License \n${answers.license} \n## Contributing \n${answers.contributions} \n## Tests \n${answers.tests} \n## Questions \n- GitHub Profile: https://github.com/${answers.username} \n- Contact information: ${answers.email}`;
+};
 
-      // const repoNamesStr = repoNames.join("\n");
+promptUser()
+  .then((answers) => {
+    const content = generateREAMDME(answers);
 
-      fs.writeFile("README.MD", repoNamesStr, function (err) {
-        if (err) {
-          throw err;
-        }
-      });
-    });
-  });
+    return writeFileAsync("README.md", content);
+  })
+  .then(() => {
+    console.log("Successfully wrote README.md");
+  })
+  .catch((err) => console.log(err));

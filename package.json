@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mcereal/README_generator#readme",
   "dependencies": {
+    "axios": "^0.21.0",
     "inquirer": "^7.3.3"
   }
 }
