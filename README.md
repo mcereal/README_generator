@@ -1,43 +1,26 @@
-# README Generator
-
-![](README_generator.gif)
-
+# README_generator 
 ![License](https://img.shields.io/github/license/mcereal/README_generator)
-
-## Description
-
-a CLI tool that generates a professional README for any project
-
-## Table of Contents
+## Description 
+a CLI tool to generate professional READMEs 
+## Table of Contents 
 
 - [Installation](##Instalation)
 - [Usage](##Usage)
 - [License](##License)
 - [Contributing](##Contributing)
 - [Tests](##Tests)
-- [Questions](##Questions)
+- [Questions](##Questions) 
 
-## Installation
-
-npm i
-
-## Usage
-
-git clone then node index.js
-
-## License
-
-None
-
-## Contributing
-
-make a pull request
-
-## Tests
-
-none
-
-## Questions
-
-- GitHub Profile: [mcereal](https://github.com/mcereal)
+## Installation 
+npm i 
+## Usage 
+just use node index.js 
+## License 
+None 
+## Contributing 
+submit a pull request 
+## Tests 
+none 
+## Questions 
+- GitHub Profile: [mcereal](https://github.com/mcereal) 
 - Contact information: mpbcurtis@gmail.com
