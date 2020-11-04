@@ -1,4 +1,5 @@
 # README_generator 
+![](README_generator.gif)
 ![License](https://img.shields.io/github/license/mcereal/README_generator)
 ## Description 
 a CLI tool to generate professional READMEs 
